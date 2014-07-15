@@ -1,19 +1,32 @@
-<form class="form">
-
-  <div class="form-group">
+<form class="form" id="photoForm" name="photoForm" ng-submit="submitPhotoForm(photoForm.$valid)" novalidate>
+  <div class="form-group" ng-class="{'has-error': photoForm.file.$invalid && !photoForm.file.$pristine}">
     <label class="control-label">照片</label>
-    <input type="file">
+    <p class="help-block" ng-show="photoForm.file.$invalid && !photoForm.file.$pristine">请选择一张照片</p>
   </div>
 
-  <div class="form-group">
-    <p class="help-block">
-      <span class="glyphicon glyphicon-map-marker"></span>
-      苏州大学
-    </p>
-  </div>
-
-  <div class="form-group">
-    <button class="btn btn-primary">保存</button>
+  <div class="photo-upload">
+    <button onclick="document.getElementById('file').click()">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
+    <input type="file" name="file" id="file" ng-change="checkUpload">
   </div>
 
 </form>
+
+<div class="form-group">
+  <p class="help-block" ng-hide="coords.longitude && coords.latitude">
+    <span class="fa fa-spain"></span>
+    获得地理位置中...
+  </p>
+  <p class="help-block" ng-show="geoError">
+    <span ng-show="geoError.code == 1">您未授权使用地理定位功能</span>
+    <span ng-show="geoError.code == 2">不能确定您的位置</span>
+    <span ng-show="geoError.code == 3">请求位置的尝试已超时</span>
+    <br>
+    <button class="btn btn-default btn-block" ng-click="getLocation()">重试</button>
+  </p>
+</div>
+
+<div class="form-group">
+  <button class="btn btn-primary btn-block" form="photoForm" ng-disabled="photoForm.$invalid && coords.longitude && coords.latitude">保存</button>
+</div>

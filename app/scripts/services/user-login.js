@@ -15,7 +15,7 @@ angular.module('shophotoApp')
         if (AV.User.current()) {
           console.log('Welcome!');
         } else if (this.checkCookie) {
-          this.login();
+          this.login(this.getUsernameFromCookie());
         } else {
           this.register();
         }
@@ -54,6 +54,10 @@ angular.module('shophotoApp')
             that.register();
           }
         });
+      },
+
+      getUsernameFromCookie: function() {
+        return ipCookie('useruuid');
       },
 
       checkCookie: function() {
