@@ -1,7 +1,9 @@
 <form class="form" id="photoForm" name="photoForm" ng-submit="submitPhotoForm(photoForm.$valid)" novalidate>
-  <div class="form-group" ng-class="{'has-error': photoForm.file.$invalid && !photoForm.file.$pristine}">
+</form>
+
+<div class="form">
+  <div class="form-group">
     <label class="control-label">照片</label>
-    <p class="help-block" ng-show="photoForm.file.$invalid && !photoForm.file.$pristine">请选择一张照片</p>
   </div>
 
   <div class="photo-upload">
@@ -12,22 +14,35 @@
     <input type="file" name="file" id="file" ng-file-select>
   </div>
 
-</form>
+  <div class="form-group">
+    <p class="help-block" ng-hide="coords.longitude && coords.latitude">
+      <span class="fa fa-spain"></span>
+      获得地理位置中...
+    </p>
+    <p class="help-block" ng-show="geoError">
+      <span ng-show="geoError.code == 1">您未授权使用地理定位功能</span>
+      <span ng-show="geoError.code == 2">不能确定您的位置</span>
+      <span ng-show="geoError.code == 3">请求位置的尝试已超时</span>
+      <br>
+      <button class="btn btn-default btn-block" ng-click="getLocation()">重试</button>
+    </p>
+  </div>
 
-<div class="form-group">
-  <p class="help-block" ng-hide="coords.longitude && coords.latitude">
-    <span class="fa fa-spain"></span>
-    获得地理位置中...
-  </p>
-  <p class="help-block" ng-show="geoError">
-    <span ng-show="geoError.code == 1">您未授权使用地理定位功能</span>
-    <span ng-show="geoError.code == 2">不能确定您的位置</span>
-    <span ng-show="geoError.code == 3">请求位置的尝试已超时</span>
-    <br>
-    <button class="btn btn-default btn-block" ng-click="getLocation()">重试</button>
-  </p>
+  <div class="form-group">
+    <button class="btn btn-primary btn-block" form="photoForm" ng-disabled="(!coords.longitude || !coords.latitude || !uploadImg) || uploading">
+      <span ng-show="!uploading">保存</span>
+      <span ng-show="uploading">保存中...</span>
+    </button>
+  </div>
+
 </div>
 
-<div class="form-group">
-  <button class="btn btn-primary btn-block" form="photoForm" ng-disabled="photoForm.$invalid && coords.longitude && coords.latitude">保存</button>
+<hr>
+
+<div class="row">
+  <div class="col-xs-6" ng-repeat="photo in photos | orderBy:'updatedAt':reverse">
+    <span class="thumbnail">
+      <img ng-src="{{ photo.file.url }}?imageView2/1/w/300/h/300/interlace/1">
+    </span>
+  </div>
 </div>

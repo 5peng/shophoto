@@ -8,9 +8,27 @@
  * Controller of the shophotoApp
  */
 angular.module('shophotoApp')
-  .controller('MainCtrl', function ($scope, $cookies, UserLogin) {
+  .controller('MainCtrl', function ($scope, $cookies, UserLogin, AvosConvert) {
 
     UserLogin.check();
+
+    $scope.getPhoto = function() {
+      var Photo = AV.Object.extend('Photo');
+      var query = new AV.Query(Photo);
+
+      query.equalTo('user', AV.User.current());
+      query.find({
+        success: function(results) {
+          $scope.$apply(function() {
+            $scope.photos = AvosConvert.toScope(results);
+            console.log($scope.photos);
+          });
+        },
+        error: function(results, error) {
+          console.log(error);
+        }
+      });
+    };
 
     // Get latlng
     // Get nearest address name
@@ -32,6 +50,8 @@ angular.module('shophotoApp')
     // Store file, user, address name & latlng
     $scope.submitPhotoForm = function() {
 
+      $scope.uploading = true;
+
       var formFile = document.getElementById('file');
 
       if (formFile.files.length > 0) {
@@ -52,6 +72,9 @@ angular.module('shophotoApp')
             photo.save(null, {
               success: function(result) {
                 console.log(result);
+                $scope.uploading = false;
+                $scope.uploadImg = undefined;
+                $scope.getPhoto();
               },
               error: function(result, error) {
                 console.log([result, error]);
@@ -69,7 +92,7 @@ angular.module('shophotoApp')
 
       var formFile = document.getElementById('file');
 
-      formFile.addEventListener('change', function(e) {
+      formFile.addEventListener('change', function() {
         
         var reader = new FileReader();
         reader.readAsDataURL(formFile.files[0]);
@@ -82,8 +105,9 @@ angular.module('shophotoApp')
         };
 
       }, false);
-    }
+    };
 
     $scope.getLocation();
     $scope.change();
+    $scope.getPhoto();
   });
