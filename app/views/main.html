@@ -6,9 +6,10 @@
 
   <div class="photo-upload">
     <button onclick="document.getElementById('file').click()">
-      <span class="glyphicon glyphicon-plus"></span>
+      <span class="glyphicon glyphicon-plus" ng-hide="uploadImg"></span>
+      <img ng-src="{{ uploadImg }}" ng-show="uploadImg">
     </button>
-    <input type="file" name="file" id="file" ng-change="checkUpload">
+    <input type="file" name="file" id="file" ng-file-select>
   </div>
 
 </form>

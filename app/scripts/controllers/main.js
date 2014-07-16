@@ -32,7 +32,8 @@ angular.module('shophotoApp')
     // Store file, user, address name & latlng
     $scope.submitPhotoForm = function() {
 
-      var formFile = $('#file')[0];
+      var formFile = document.getElementById('file');
+
       if (formFile.files.length > 0) {
         var uploadFile = formFile.files[0];
         var file = new AV.File(uploadFile.name, uploadFile);
@@ -64,5 +65,25 @@ angular.module('shophotoApp')
       }
     };
 
+    $scope.change = function() {
+
+      var formFile = document.getElementById('file');
+
+      formFile.addEventListener('change', function(e) {
+        
+        var reader = new FileReader();
+        reader.readAsDataURL(formFile.files[0]);
+
+        reader.onload = function (event) {
+          var img = event.target.result;
+          $scope.$apply(function() {
+            $scope.uploadImg = img;
+          });
+        };
+
+      }, false);
+    }
+
     $scope.getLocation();
+    $scope.change();
   });
