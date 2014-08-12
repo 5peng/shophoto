@@ -16,7 +16,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ipCookie'
+    'ipCookie',
+    'leaflet-directive'
   ])
   .config(function ($routeProvider) {
     $routeProvider
