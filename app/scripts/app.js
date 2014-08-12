@@ -33,6 +33,10 @@ angular
         templateUrl: 'views/logout.html',
         controller: 'LogoutCtrl'
       })
+      .when('/wall', {
+        templateUrl: 'views/wall.html',
+        controller: 'WallCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

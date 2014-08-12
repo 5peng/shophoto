@@ -43,6 +43,12 @@
 <hr>
 
 <div class="row">
+  <div class="col-xs-12">
+    <a href="#/wall" class="btn btn-default btn-block">地图查看历史</a>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-xs-6" ng-repeat="photo in photos | orderBy:'updatedAt':reverse">
     <span class="thumbnail">
       <img ng-src="{{ photo.file.url }}?imageView2/1/w/300/h/300/interlace/1">
